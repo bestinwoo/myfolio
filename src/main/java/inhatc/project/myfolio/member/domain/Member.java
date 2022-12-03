@@ -21,5 +21,14 @@ public class Member {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	private String oauthId;
+	private String email;
+	private String oauth2Id;
+
+	public static Member createMember(String oauth2Id, String email, String name) {
+		return Member.builder()
+				.name(name)
+				.oauth2Id(oauth2Id)
+				.email(email)
+				.build();
+	}
 }
