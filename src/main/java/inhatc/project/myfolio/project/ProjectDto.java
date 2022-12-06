@@ -3,6 +3,7 @@ package inhatc.project.myfolio.project;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import inhatc.project.myfolio.member.dto.MemberDto;
 import inhatc.project.myfolio.tag.TagDto;
@@ -20,7 +21,7 @@ public class ProjectDto {
 	@Builder
 	public static class Create {
 		private Long memberId;
-		private List<String> tags;
+		private Set<String> tags;
 		private String title;
 		private String content;
 		private String githubUrl;

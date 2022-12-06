@@ -2,7 +2,9 @@ package inhatc.project.myfolio.project.domain;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -47,7 +49,7 @@ public class Project {
 			joinColumns = @JoinColumn(name = "post_id"),
 			inverseJoinColumns = @JoinColumn(name = "tag_id"))
 	@Builder.Default()
-	private List<Tag> tags = new ArrayList<>();
+	private Set<Tag> tags = new HashSet<>();
 
 	private String title;
 	private String content;

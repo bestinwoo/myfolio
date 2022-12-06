@@ -1,6 +1,7 @@
 package inhatc.project.myfolio.project.mapper;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.mapstruct.BeanMapping;
@@ -26,9 +27,9 @@ public interface ProjectMapper {
 	ProjectDto.Response projectToProjectDto(
 			Project project);
 
-	default List<Tag> mappingTags(List<String> tags) {
+	default Set<Tag> mappingTags(Set<String> tags) {
 		return tags.stream().map(t -> {
 			return Tag.builder().name(t).build();
-		}).collect(Collectors.toList());
+		}).collect(Collectors.toSet());
 	}
 }
