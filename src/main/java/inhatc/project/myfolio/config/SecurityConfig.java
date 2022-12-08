@@ -33,7 +33,7 @@ public class SecurityConfig {
 	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 	@Bean
 	public WebSecurityCustomizer webSecurity() {
-		return (web) -> web.ignoring().antMatchers("/resources/**", "/images/**", "swagger-ui/**", "/v3/api-docs/**");
+		return (web) -> web.ignoring().antMatchers("/resources/**", "/images/**", "/swagger-ui/**", "/v3/api-docs/**");
 	}
 
 	@Bean
