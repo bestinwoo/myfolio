@@ -1,4 +1,4 @@
-package inhatc.project.myfolio.jwt;
+package inhatc.project.myfolio.common.jwt;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

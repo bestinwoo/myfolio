@@ -1,4 +1,4 @@
-package inhatc.project.myfolio.exception;
+package inhatc.project.myfolio.common.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

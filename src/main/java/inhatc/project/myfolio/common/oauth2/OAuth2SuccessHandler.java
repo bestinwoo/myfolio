@@ -1,4 +1,4 @@
-package inhatc.project.myfolio.oauth2;
+package inhatc.project.myfolio.common.oauth2;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -15,8 +15,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import inhatc.project.myfolio.jwt.TokenDto;
-import inhatc.project.myfolio.jwt.TokenProvider;
+import inhatc.project.myfolio.common.jwt.TokenDto;
+import inhatc.project.myfolio.common.jwt.TokenProvider;
 import inhatc.project.myfolio.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

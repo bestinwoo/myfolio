@@ -1,4 +1,4 @@
-package inhatc.project.myfolio.config;
+package inhatc.project.myfolio.common.config;
 
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.customizers.OpenApiCustomiser;

@@ -1,4 +1,4 @@
-package inhatc.project.myfolio.jwt;
+package inhatc.project.myfolio.common.jwt;
 
 import java.io.IOException;
 

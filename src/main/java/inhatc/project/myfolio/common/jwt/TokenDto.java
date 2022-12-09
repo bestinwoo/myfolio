@@ -1,4 +1,4 @@
-package inhatc.project.myfolio.jwt;
+package inhatc.project.myfolio.common.jwt;
 
 import lombok.Builder;
 import lombok.Getter;

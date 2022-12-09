@@ -1,7 +1,7 @@
-package inhatc.project.myfolio.jwt;
+package inhatc.project.myfolio.common.jwt;
 
 
-import static inhatc.project.myfolio.exception.ErrorCode.*;
+import static inhatc.project.myfolio.common.exception.ErrorCode.*;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import inhatc.project.myfolio.exception.CustomException;
-import inhatc.project.myfolio.exception.ErrorResponse;
+import inhatc.project.myfolio.common.exception.CustomException;
+import inhatc.project.myfolio.common.exception.ErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

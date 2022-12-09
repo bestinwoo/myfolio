@@ -1,4 +1,4 @@
-package inhatc.project.myfolio.config;
+package inhatc.project.myfolio.common.config;
 
 import java.util.List;
 
@@ -9,17 +9,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import inhatc.project.myfolio.jwt.JwtAccessDeniedHandler;
-import inhatc.project.myfolio.jwt.JwtAuthFilter;
-import inhatc.project.myfolio.jwt.JwtAuthenticationEntryPoint;
-import inhatc.project.myfolio.jwt.TokenProvider;
-import inhatc.project.myfolio.oauth2.CustomOAuth2UserService;
-import inhatc.project.myfolio.oauth2.OAuth2SuccessHandler;
+import inhatc.project.myfolio.common.jwt.JwtAccessDeniedHandler;
+import inhatc.project.myfolio.common.jwt.JwtAuthFilter;
+import inhatc.project.myfolio.common.jwt.JwtAuthenticationEntryPoint;
+import inhatc.project.myfolio.common.jwt.TokenProvider;
+import inhatc.project.myfolio.common.oauth2.CustomOAuth2UserService;
+import inhatc.project.myfolio.common.oauth2.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -69,6 +68,7 @@ public class SecurityConfig {
 				.authorizeRequests()
 				.antMatchers(HttpMethod.OPTIONS).permitAll()
 				.antMatchers("/token/**").permitAll()
+				.antMatchers("/project/**").permitAll()
 				.anyRequest()
 				.authenticated();
 
