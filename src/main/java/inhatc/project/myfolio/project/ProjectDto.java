@@ -14,37 +14,67 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 public class ProjectDto {
-	@Getter
-	@Setter
-	@AllArgsConstructor
-	@NoArgsConstructor
-	@Builder
-	public static class Create {
-		private Long memberId;
-		private Set<String> tags;
-		private String title;
-		private String content;
-		private String githubUrl;
-		private String webUrl;
-		private String thumbnailUrl;
+	public static class Request {
+		@Getter
+		@Setter
+		@AllArgsConstructor
+		@NoArgsConstructor
+		@Builder
+		public static class Create {
+			private Long memberId;
+			private Set<String> tags;
+			private String title;
+			private String content;
+			private String githubUrl;
+			private String webUrl;
+			private String thumbnailUrl;
+		}
+
+		@Getter
+		@Setter
+		@AllArgsConstructor
+		@NoArgsConstructor
+		@Builder
+		public static class Search {
+			private String title;
+			private String tagName;
+		}
 	}
 
-	@Getter
-	@Setter
-	@AllArgsConstructor
-	@NoArgsConstructor
-	@Builder
 	public static class Response {
-		private Long id;
-		private MemberDto member;
-		private List<TagDto> tags;
-		private String title;
-		private String content;
-		private String githubUrl;
-		private String webUrl;
-		private LocalDateTime createDate;
-		private LocalDateTime updateDate;
-		private String thumbnailUrl;
+		@Getter
+		@Setter
+		@AllArgsConstructor
+		@NoArgsConstructor
+		@Builder
+		public static class Detail {
+			private Long id;
+			private MemberDto member;
+			private List<TagDto> tags;
+			private String title;
+			private String content;
+			private String githubUrl;
+			private String webUrl;
+			private LocalDateTime createDate;
+			private LocalDateTime updateDate;
+			private String thumbnailUrl;
+		}
+		@Getter
+		@Setter
+		@AllArgsConstructor
+		@NoArgsConstructor
+		@Builder
+		public static class Summary {
+			private Long id;
+			private List<TagDto> tags;
+			private String title;
+			private String githubUrl;
+			private String webUrl;
+			private LocalDateTime createDate;
+			private LocalDateTime updateDate;
+			private String thumbnailUrl;
+		}
+
 	}
 
 }

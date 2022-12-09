@@ -16,12 +16,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import inhatc.project.myfolio.common.BaseTime;
 import inhatc.project.myfolio.member.domain.Member;
+import inhatc.project.myfolio.tag.domain.ProjectTag;
 import inhatc.project.myfolio.tag.domain.Tag;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -46,12 +48,8 @@ public class Project extends BaseTime {
 	@JoinColumn(name = "member_id")
 	private Member member;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name = "post_tag",
-			joinColumns = @JoinColumn(name = "post_id"),
-			inverseJoinColumns = @JoinColumn(name = "tag_id"))
-	@Builder.Default()
-	private Set<Tag> tags = new HashSet<>();
+	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<ProjectTag> tags;
 
 	private String title;
 	private String content;

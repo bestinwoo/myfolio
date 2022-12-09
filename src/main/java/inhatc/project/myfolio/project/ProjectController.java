@@ -2,6 +2,7 @@ package inhatc.project.myfolio.project;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,8 +25,10 @@ public class ProjectController {
 	@Operation(summary = "프로젝트 생성")
 	@ApiResponse(responseCode = "201", description = "프로젝트 생성 완료")
 	@PostMapping
-	public ResponseEntity<?> createProject(@Valid @RequestBody ProjectDto.Create create) {
+	public ResponseEntity<?> createProject(@Valid @RequestBody ProjectDto.Request.Create create) {
 		projectService.createProject(create);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
+
+	//public ResponseEntity<Page<ProjectDto.Response>>
 }
