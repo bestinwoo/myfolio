@@ -1,4 +1,4 @@
-package inhatc.project.myfolio.common.config;
+package inhatc.project.myfolio.config;
 
 import java.util.List;
 
@@ -13,12 +13,12 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import inhatc.project.myfolio.common.jwt.JwtAccessDeniedHandler;
-import inhatc.project.myfolio.common.jwt.JwtAuthFilter;
-import inhatc.project.myfolio.common.jwt.JwtAuthenticationEntryPoint;
-import inhatc.project.myfolio.common.jwt.TokenProvider;
-import inhatc.project.myfolio.common.oauth2.CustomOAuth2UserService;
-import inhatc.project.myfolio.common.oauth2.OAuth2SuccessHandler;
+import inhatc.project.myfolio.jwt.JwtAccessDeniedHandler;
+import inhatc.project.myfolio.jwt.JwtAuthFilter;
+import inhatc.project.myfolio.jwt.JwtAuthenticationEntryPoint;
+import inhatc.project.myfolio.jwt.TokenProvider;
+import inhatc.project.myfolio.oauth2.CustomOAuth2UserService;
+import inhatc.project.myfolio.oauth2.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 
 @Configuration

@@ -1,4 +1,4 @@
-package inhatc.project.myfolio.common.oauth2;
+package inhatc.project.myfolio.oauth2;
 
 import java.util.Map;
 

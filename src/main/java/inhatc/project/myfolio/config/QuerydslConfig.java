@@ -1,4 +1,4 @@
-package inhatc.project.myfolio.common.config;
+package inhatc.project.myfolio.config;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

@@ -1,4 +1,4 @@
-package inhatc.project.myfolio.common.jwt;
+package inhatc.project.myfolio.jwt;
 
 
 import static inhatc.project.myfolio.common.exception.ErrorCode.*;
