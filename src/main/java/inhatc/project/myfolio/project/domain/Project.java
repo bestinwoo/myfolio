@@ -20,6 +20,7 @@ import javax.persistence.ManyToOne;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import inhatc.project.myfolio.common.BaseTime;
 import inhatc.project.myfolio.member.domain.Member;
 import inhatc.project.myfolio.tag.domain.Tag;
 import lombok.AccessLevel;
@@ -27,15 +28,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Entity
 @Getter
+@Setter
 @AllArgsConstructor
 @Builder
-@ToString
 @NoArgsConstructor
-public class Project {
+public class Project extends BaseTime {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -55,9 +57,5 @@ public class Project {
 	private String content;
 	private String githubUrl;
 	private String webUrl;
-	@CreatedDate()
-	private LocalDateTime createDate;
-	@LastModifiedDate
-	private LocalDateTime updateDate;
 	private String thumbnailUrl;
 }
