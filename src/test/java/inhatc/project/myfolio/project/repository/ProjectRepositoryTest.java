@@ -10,11 +10,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.TestPropertySource;
 
+import inhatc.project.myfolio.TestConfig;
 import inhatc.project.myfolio.member.domain.Member;
 import inhatc.project.myfolio.member.repository.MemberRepository;
 import inhatc.project.myfolio.project.domain.Project;
@@ -24,6 +26,7 @@ import inhatc.project.myfolio.tag.repository.TagRepository;
 
 @DataJpaTest
 @TestPropertySource(locations="classpath:application-test.properties")
+@Import(TestConfig.class)
 class ProjectRepositoryTest {
 	@Autowired
 	private ProjectRepository projectRepository;
@@ -35,7 +38,8 @@ class ProjectRepositoryTest {
 	public void createProjects() {
 		ArrayList<Project> projects = new ArrayList<>();
 		for(long i = 1; i <= 10; i++) {
-			Tag tag = Tag.builder().name("Test Tag " + i).build();
+			String prefix = i % 3 == 0 ? "Before" : "After";
+			Tag tag = Tag.builder().name(prefix + " Tag " + i).build();
 			Member member = Member.builder().name("Test member " + i).build();
 			tagRepository.save(tag);
 			memberRepository.save(member);
@@ -45,7 +49,7 @@ class ProjectRepositoryTest {
 					.githubUrl("Test Github " + i)
 					.thumbnailUrl("Test Thumbnail " + i)
 					.content("Test Content " + i)
-					.title("Test Title " + i)
+					.title(prefix + " Title " + i)
 					.webUrl("Test Web " + i)
 					.member(member)
 					.tags(Set.of(
@@ -61,10 +65,21 @@ class ProjectRepositoryTest {
 	public void searchProjectTitle() {
 		createProjects();
 		PageRequest pageRequest = PageRequest.of(0, 5, Sort.by("createdDate"));
-		Page<Project> projects = projectRepository.findByTitleContaining("Test", pageRequest);
+		Page<Project> projects = projectRepository.findByTitleContaining("After", pageRequest);
 
 		assertThat(projects.getContent().size()).isEqualTo(5);
-		assertThat(projects.getTotalElements()).isEqualTo(10);
+		assertThat(projects.getTotalElements()).isEqualTo(7);
+	}
+
+	@Test
+	@DisplayName("프로젝트 태그 검색 테스트")
+	public void searchProjectTag() {
+		createProjects();
+		PageRequest pageRequest = PageRequest.of(0, 5, Sort.by("createdDate"));
+		Page<Project> projects = projectRepository.findPageByTagName("After", pageRequest);
+
+		assertThat(projects.getContent().size()).isEqualTo(5);
+		assertThat(projects.getTotalElements()).isEqualTo(7);
 	}
 
 }
