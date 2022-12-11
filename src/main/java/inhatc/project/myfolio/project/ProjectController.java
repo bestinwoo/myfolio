@@ -3,13 +3,17 @@ package inhatc.project.myfolio.project;
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import inhatc.project.myfolio.common.PagedResponse;
+import inhatc.project.myfolio.project.ProjectDto.Response.Summary;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,5 +34,10 @@ public class ProjectController {
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
-	//public ResponseEntity<Page<ProjectDto.Response>>
+	@Operation(summary = "프로젝트 목록 조회")
+	@GetMapping
+	public ResponseEntity<PagedResponse<Summary>> getProjectList(@Valid ProjectDto.Request.Find find) {
+		PagedResponse<Summary> projectList = projectService.getProjectList(find);
+		return ResponseEntity.ok(projectList);
+	}
 }

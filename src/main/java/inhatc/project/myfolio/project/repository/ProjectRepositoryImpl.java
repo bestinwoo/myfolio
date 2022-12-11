@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -31,13 +32,15 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom{
 	@Override
 	public Page<Project> findPageByTagName(String tagName, Pageable pageable) {
 		List<Long> projectTagIds = queryFactory
-				.select(projectTag.id)
+				.selectDistinct(projectTag.project.id)
 				.from(projectTag)
+				.leftJoin(projectTag.tag, QTag.tag)
 				.where(likeTagName(tagName))
 				.fetch();
 
 		List<Project> projects = queryFactory
-				.selectFrom(project)
+				.selectDistinct(project)
+				.from(project)
 				.leftJoin(project.member, QMember.member)
 				.leftJoin(project.tags, projectTag)
 				.where(inProjectTag(projectTagIds))
@@ -46,7 +49,7 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom{
 				.fetch();
 
 		JPAQuery<Long> countQuery = queryFactory
-				.select(project.count())
+				.selectDistinct(project.count())
 				.from(project)
 				.leftJoin(project.member, QMember.member)
 				.leftJoin(project.tags, projectTag)
@@ -56,7 +59,7 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom{
 	}
 
 	private BooleanExpression likeTagName(String tagName) {
-		if (tagName.isBlank()) {
+		if (!StringUtils.hasText(tagName)) {
 			return null;
 		}
 

@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import inhatc.project.myfolio.member.dto.MemberDto;
 import inhatc.project.myfolio.project.domain.FindType;
 import inhatc.project.myfolio.tag.TagDto;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,8 +48,10 @@ public class ProjectDto {
 		public static class Find {
 			private String keyword;
 			private FindType type;
-			private int page;
-			private int size;
+			@Schema(defaultValue = "1")
+			private int page = 1;
+			@Schema(defaultValue = "5")
+			private int size = 5;
 		}
 
 	}
@@ -67,8 +70,8 @@ public class ProjectDto {
 			private String content;
 			private String githubUrl;
 			private String webUrl;
-			private LocalDateTime createDate;
-			private LocalDateTime updateDate;
+			private LocalDateTime createdDate;
+			private LocalDateTime modifiedDate;
 			private String thumbnailUrl;
 		}
 		@Getter
@@ -82,8 +85,8 @@ public class ProjectDto {
 			private String title;
 			private String githubUrl;
 			private String webUrl;
-			private LocalDateTime createDate;
-			private LocalDateTime updateDate;
+			private LocalDateTime createdDate;
+			private LocalDateTime modifiedDate;
 			private String thumbnailUrl;
 		}
 

@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import inhatc.project.myfolio.common.PagedResponse;
+import inhatc.project.myfolio.project.ProjectDto.Response.Summary;
 import inhatc.project.myfolio.project.domain.FindType;
 import inhatc.project.myfolio.project.domain.Project;
 import inhatc.project.myfolio.project.mapper.ProjectMapper;
@@ -30,12 +33,18 @@ public class ProjectService {
 		projectTagService.saveTags(project, projectDto.getTags());
 	}
 
-	public List<ProjectDto.Response.Summary> getProjectList(ProjectDto.Request.Find find) {
+	public PagedResponse<Summary> getProjectList(ProjectDto.Request.Find find) {
 		PageRequest pageRequest = PageRequest.of(find.getPage() - 1, find.getSize(), Sort.by("createdDate"));
-	//	if(find.getType() == FindType.TITLE) {
-			Page<Project> projects = projectRepository.findByTitleContaining(find.getKeyword(), pageRequest);
-		//}
-		return ProjectMapper.INSTANCE.toProjectSummaries(projects.getContent());
+
+		Page<Project> projects = new PageImpl<Project>(List.of());
+		if(find.getType() == FindType.TITLE) {
+			projects = projectRepository.findByTitleContaining(find.getKeyword(), pageRequest);
+		} else {
+			projects = projectRepository.findPageByTagName(find.getKeyword(), pageRequest);
+		}
+
+		List<Summary> summaries = ProjectMapper.INSTANCE.toProjectSummaries(projects.getContent());
+		return new PagedResponse<Summary>(summaries, find.getPage(), find.getSize(), projects.getTotalElements(), projects.getTotalPages(), projects.isLast());
 	}
 }
 
