@@ -13,10 +13,14 @@ public class TagService {
 
 	public Tag findOrCreateTag(String tagName) {
 		Tag tag = tagRepository.findByName(tagName)
-				.orElse(Tag.builder()
-						.name(tagName)
-						.build());
+				.orElseGet(() -> {
+					Tag newTag = Tag.builder()
+									.name(tagName)
+									.build();
+					return tagRepository.save(newTag);
+					}
+				);
 
-		return tagRepository.save(tag);
+		return tag;
 	}
 }
