@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 import inhatc.project.myfolio.project.ProjectDto;
@@ -28,6 +29,9 @@ public interface ProjectMapper {
 			Project project);
 
 	List<ProjectDto.Response.Summary> toProjectSummaries(List<Project> projects);
+
+	@Mapping(target = "tags", ignore = true)
+	void updateProjectFromDto(ProjectDto.Request.Create dto, @MappingTarget Project project);
 
 	default Set<TagDto> projectTagToTagDto(Set<ProjectTag> tags) {
 		Set<TagDto> tagDtoSet = new HashSet<>();
