@@ -47,6 +47,7 @@ class ProjectMapperTest {
 					.thumbnailUrl("Test Thumbnail " + i)
 					.content("Test Content " + i)
 					.title("Test Title " + i)
+					.summary("Test Summary " + i)
 					.webUrl("Test Web " + i)
 					.member(Member.builder().id(i).name("Test member " + i).build())
 					.tags(Set.of(
@@ -73,5 +74,25 @@ class ProjectMapperTest {
 		List<ProjectDto.Response.Summary> summaries = ProjectMapper.INSTANCE.toProjectSummaries(projects);
 
 		assertThat(summaries).isNotEmpty();
+	}
+
+	@Test
+	@DisplayName("Project Entity Update From Dto")
+	public void projectUpdateFromDto() {
+		Project project = createProjects(1).get(0);
+		ProjectDto.Request.Create dto = ProjectDto.Request.Create.builder()
+				.memberId(2L)
+				.tags(Set.of("Test Tag 0", "Test Tag1"))
+				.title("Modify Test")
+				.content("Modify Content")
+				.summary("Modify Summary")
+				.githubUrl("http://modify.com")
+				.webUrl("http://modifyweb.com")
+				.thumbnailUrl("modifiy thumnail")
+				.build();
+		ProjectMapper.INSTANCE.updateProjectFromDto(dto, project);
+
+		assertThat(project.getContent()).isEqualTo(dto.getContent());
+		assertThat(project.getId()).isEqualTo(project.getId());
 	}
 }
