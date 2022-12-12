@@ -25,7 +25,7 @@ public class ProjectTagService {
 			return findOrCreateProjectTag(project, tag);
 		}).collect(Collectors.toSet());
 
-		project.setTags(projectTags);
+		project.getTags().addAll(projectTags);
 	}
 
 	public ProjectTag findOrCreateProjectTag(Project project, Tag tag) {

@@ -4,35 +4,24 @@ import static inhatc.project.myfolio.project.domain.QProject.*;
 import static inhatc.project.myfolio.tag.domain.QProjectTag.*;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
-import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import inhatc.project.myfolio.member.domain.QMember;
-import inhatc.project.myfolio.project.ProjectDto;
 import inhatc.project.myfolio.project.domain.Project;
-import inhatc.project.myfolio.project.domain.QProject;
-import inhatc.project.myfolio.tag.domain.ProjectTag;
-import inhatc.project.myfolio.tag.domain.QProjectTag;
-import inhatc.project.myfolio.tag.domain.QTag;
-import lombok.RequiredArgsConstructor;
 
 @Repository
-
 public class ProjectRepositoryImpl extends QuerydslRepositorySupport implements ProjectRepositoryCustom{
 	private final JPAQueryFactory queryFactory;
-
 
 	public ProjectRepositoryImpl(JPAQueryFactory queryFactory) {
 		super(Project.class);
@@ -44,7 +33,7 @@ public class ProjectRepositoryImpl extends QuerydslRepositorySupport implements 
 		List<Long> projectTagIds = queryFactory
 				.selectDistinct(projectTag.project.id)
 				.from(projectTag)
-				.innerJoin(projectTag.tag)
+				.leftJoin(projectTag.tag)
 				.where(likeTagName(tagName))
 				.fetch();
 
