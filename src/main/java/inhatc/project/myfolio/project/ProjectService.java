@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import inhatc.project.myfolio.common.PagedResponse;
 import inhatc.project.myfolio.common.exception.CustomException;
 import inhatc.project.myfolio.common.exception.ErrorCode;
+import inhatc.project.myfolio.jwt.SecurityUtil;
 import inhatc.project.myfolio.project.ProjectDto.Response.Summary;
 import inhatc.project.myfolio.project.domain.FindType;
 import inhatc.project.myfolio.project.domain.Project;
@@ -56,6 +57,18 @@ public class ProjectService {
 				.orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PROJECT));
 
 		return ProjectMapper.INSTANCE.projectToProjectDetail(project);
+	}
+
+	public void deleteProject(Long projectId) {
+		Long currentMemberId = SecurityUtil.getCurrentMemberId();
+
+		Project project = projectRepository.findById(projectId)
+				.orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PROJECT));
+
+		if(!project.getMember().getId().equals(currentMemberId)) {
+			throw new CustomException(ErrorCode.NO_PERMISSION);
+		}
+		projectRepository.delete(project);
 	}
 }
 
