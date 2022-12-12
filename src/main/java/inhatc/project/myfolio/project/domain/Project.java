@@ -18,6 +18,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -56,4 +58,5 @@ public class Project extends BaseTime {
 	private String githubUrl;
 	private String webUrl;
 	private String thumbnailUrl;
+	private String summary;
 }

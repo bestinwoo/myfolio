@@ -38,6 +38,8 @@ public class ProjectDto {
 			private String webUrl;
 			@NotBlank(message = "썸네일 링크는 필수 값입니다.")
 			private String thumbnailUrl;
+			@NotBlank(message = "프로젝트 개요는 필수 값입니다.")
+			private String summary;
 		}
 
 		@Getter
@@ -70,6 +72,7 @@ public class ProjectDto {
 			private String content;
 			private String githubUrl;
 			private String webUrl;
+			private String summary;
 			private LocalDateTime createdDate;
 			private LocalDateTime modifiedDate;
 			private String thumbnailUrl;
@@ -85,6 +88,7 @@ public class ProjectDto {
 			private String title;
 			private String githubUrl;
 			private String webUrl;
+			private String summary;
 			private LocalDateTime createdDate;
 			private LocalDateTime modifiedDate;
 			private String thumbnailUrl;

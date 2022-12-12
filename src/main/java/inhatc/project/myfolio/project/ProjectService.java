@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import inhatc.project.myfolio.common.PagedResponse;
+import inhatc.project.myfolio.common.exception.CustomException;
+import inhatc.project.myfolio.common.exception.ErrorCode;
 import inhatc.project.myfolio.project.ProjectDto.Response.Summary;
 import inhatc.project.myfolio.project.domain.FindType;
 import inhatc.project.myfolio.project.domain.Project;
@@ -39,12 +41,21 @@ public class ProjectService {
 		Page<Project> projects = new PageImpl<Project>(List.of());
 		if(find.getType() == FindType.TITLE) {
 			projects = projectRepository.findByTitleContaining(find.getKeyword(), pageRequest);
-		} else {
+		} else if(find.getType() == FindType.TAG) {
 			projects = projectRepository.findPageByTagName(find.getKeyword(), pageRequest);
+		} else {
+			projects = projectRepository.findAll(pageRequest);
 		}
 
 		List<Summary> summaries = ProjectMapper.INSTANCE.toProjectSummaries(projects.getContent());
 		return new PagedResponse<Summary>(summaries, find.getPage(), find.getSize(), projects.getTotalElements(), projects.getTotalPages(), projects.isLast());
+	}
+
+	public ProjectDto.Response.Detail getProjectDetail(Long projectId) {
+		Project project = projectRepository.findById(projectId)
+				.orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PROJECT));
+
+		return ProjectMapper.INSTANCE.projectToProjectDetail(project);
 	}
 }
 
