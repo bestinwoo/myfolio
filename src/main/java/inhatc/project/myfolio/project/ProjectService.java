@@ -1,6 +1,6 @@
 package inhatc.project.myfolio.project;
 
-import java.util.HashSet;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,10 +21,8 @@ import inhatc.project.myfolio.project.domain.FindType;
 import inhatc.project.myfolio.project.domain.Project;
 import inhatc.project.myfolio.project.mapper.ProjectMapper;
 import inhatc.project.myfolio.project.repository.ProjectRepository;
-import inhatc.project.myfolio.tag.ProjectTagService;
-import inhatc.project.myfolio.tag.TagService;
+import inhatc.project.myfolio.tag.service.ProjectTagService;
 import inhatc.project.myfolio.tag.domain.ProjectTag;
-import inhatc.project.myfolio.tag.domain.Tag;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -99,6 +97,7 @@ public class ProjectService {
 
 
 		project.getTags().removeAll(deleteTags);
+		project.setModifiedDate(LocalDateTime.now());
 		projectTagService.saveTags(project, projectDto.getTags());
 		ProjectMapper.INSTANCE.updateProjectFromDto(projectDto, project);
 	}

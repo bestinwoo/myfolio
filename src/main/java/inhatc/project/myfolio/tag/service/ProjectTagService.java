@@ -1,5 +1,6 @@
-package inhatc.project.myfolio.tag;
+package inhatc.project.myfolio.tag.service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -24,8 +25,11 @@ public class ProjectTagService {
 			Tag tag = tagService.findOrCreateTag(tagName);
 			return findOrCreateProjectTag(project, tag);
 		}).collect(Collectors.toSet());
-
-		project.getTags().addAll(projectTags);
+		if(project.getTags() == null) {
+			project.setTags(projectTags);
+		} else {
+			project.getTags().addAll(projectTags);
+		}
 	}
 
 	public ProjectTag findOrCreateProjectTag(Project project, Tag tag) {
@@ -34,5 +38,10 @@ public class ProjectTagService {
 					ProjectTag createdProjectTag = ProjectTag.builder().project(project).tag(tag).build();
 					return projectTagRepository.save(createdProjectTag);
 				});
+	}
+
+	public Set<String> findTagNameByKeyword(String keyword) {
+		return projectTagRepository.findByTagNameContaining(keyword).stream().map(ProjectTag::getTag).map(Tag::getName).collect(
+				Collectors.toSet());
 	}
 }

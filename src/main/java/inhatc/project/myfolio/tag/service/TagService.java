@@ -1,4 +1,8 @@
-package inhatc.project.myfolio.tag;
+package inhatc.project.myfolio.tag.service;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -22,5 +26,9 @@ public class TagService {
 				);
 
 		return tag;
+	}
+
+	public List<String> findByTagName(String tagName) {
+		return tagRepository.findByNameContaining(tagName).stream().map(Tag::getName).collect(Collectors.toList());
 	}
 }
