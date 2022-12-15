@@ -55,8 +55,7 @@ public class ProjectService {
 	}
 
 	public ProjectDto.Response.Detail getProjectDetail(Long projectId) {
-		Project project = projectRepository.findById(projectId)
-				.orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PROJECT));
+		Project project = getProjectById(projectId);
 
 		return ProjectMapper.INSTANCE.projectToProjectDetail(project);
 	}
@@ -64,17 +63,14 @@ public class ProjectService {
 	public void deleteProject(Long projectId) {
 		Long currentMemberId = SecurityUtil.getCurrentMemberId();
 
-		Project project = projectRepository.findById(projectId)
-				.orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PROJECT));
+		Project project = getProjectById(projectId);
 
 		isProjectOwner(project);
 		projectRepository.delete(project);
 	}
 
 	public void modifyProject(ProjectDto.Request.Create projectDto, Long projectId) {
-		Project project = projectRepository.findById(projectId)
-				.orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PROJECT));
-
+		Project project = getProjectById(projectId);
 		isProjectOwner(project);
 
 		Set<ProjectTag> deleteTags = project.getTags()
@@ -94,6 +90,10 @@ public class ProjectService {
 		if(!project.getMember().getId().equals(currentMemberId)) {
 			throw new CustomException(ErrorCode.NO_PERMISSION);
 		}
+	}
+
+	private Project getProjectById(Long id) {
+		return projectRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PROJECT));
 	}
 }
 
