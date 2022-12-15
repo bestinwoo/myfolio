@@ -67,9 +67,7 @@ public class ProjectService {
 		Project project = projectRepository.findById(projectId)
 				.orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PROJECT));
 
-		if(!project.getMember().getId().equals(currentMemberId)) {
-			throw new CustomException(ErrorCode.NO_PERMISSION);
-		}
+		isProjectOwner(project);
 		projectRepository.delete(project);
 	}
 
@@ -77,21 +75,25 @@ public class ProjectService {
 		Project project = projectRepository.findById(projectId)
 				.orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PROJECT));
 
-		Long currentMemberId = SecurityUtil.getCurrentMemberId();
-		if(!project.getMember().getId().equals(currentMemberId)) {
-			throw new CustomException(ErrorCode.NO_PERMISSION);
-		}
+		isProjectOwner(project);
 
 		Set<ProjectTag> deleteTags = project.getTags()
 				.stream()
 				.filter(old -> !projectDto.getTags().remove(old.getTag().getName()))
 				.collect(
 						Collectors.toSet());
-		
+
 		project.getTags().removeAll(deleteTags);
 		project.setModifiedDate(LocalDateTime.now());
 		projectTagService.saveTags(project, projectDto.getTags());
 		ProjectMapper.INSTANCE.updateProjectFromDto(projectDto, project);
+	}
+
+	private void isProjectOwner(Project project) {
+		Long currentMemberId = SecurityUtil.getCurrentMemberId();
+		if(!project.getMember().getId().equals(currentMemberId)) {
+			throw new CustomException(ErrorCode.NO_PERMISSION);
+		}
 	}
 }
 
