@@ -39,7 +39,7 @@ public class ProjectService {
 	}
 
 	public PagedResponse<Summary> getProjectList(ProjectDto.Request.Find find) {
-		PageRequest pageRequest = PageRequest.of(find.getPage() - 1, find.getSize(), Sort.by("createdDate"));
+		PageRequest pageRequest = PageRequest.of(find.getPage() - 1, find.getSize(), Sort.by("createdDate").descending());
 
 		Page<Project> projects = new PageImpl<Project>(List.of());
 		if(find.getType() == FindType.TITLE) {
@@ -84,18 +84,10 @@ public class ProjectService {
 
 		Set<ProjectTag> deleteTags = project.getTags()
 				.stream()
-				.filter(old -> {
-					if(!projectDto.getTags().contains(old.getTag().getName())) {
-						return true;
-					} else {
-						projectDto.getTags().remove(old.getTag().getName());
-						return false;
-					}
-				})
+				.filter(old -> !projectDto.getTags().remove(old.getTag().getName()))
 				.collect(
 						Collectors.toSet());
-
-
+		
 		project.getTags().removeAll(deleteTags);
 		project.setModifiedDate(LocalDateTime.now());
 		projectTagService.saveTags(project, projectDto.getTags());
