@@ -8,6 +8,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import inhatc.project.myfolio.member.dto.MemberDto;
 import inhatc.project.myfolio.project.domain.FindType;
 import inhatc.project.myfolio.tag.TagDto;
@@ -73,7 +75,9 @@ public class ProjectDto {
 			private String githubUrl;
 			private String webUrl;
 			private String summary;
+			@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 			private LocalDateTime createdDate;
+			@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 			private LocalDateTime modifiedDate;
 			private String thumbnailUrl;
 		}
@@ -89,7 +93,9 @@ public class ProjectDto {
 			private String githubUrl;
 			private String webUrl;
 			private String summary;
+			@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 			private LocalDateTime createdDate;
+			@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 			private LocalDateTime modifiedDate;
 			private String thumbnailUrl;
 		}
