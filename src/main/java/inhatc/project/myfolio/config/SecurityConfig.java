@@ -68,7 +68,6 @@ public class SecurityConfig {
 				.authorizeRequests()
 				.antMatchers(HttpMethod.OPTIONS).permitAll()
 				.antMatchers("/token/**").permitAll()
-				.antMatchers("/project/**").permitAll()
 				.anyRequest()
 				.authenticated();
 
