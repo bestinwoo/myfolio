@@ -25,6 +25,7 @@ public class ProjectTagService {
 			Tag tag = tagService.findOrCreateTag(tagName);
 			return findOrCreateProjectTag(project, tag);
 		}).collect(Collectors.toSet());
+
 		if(project.getTags() == null) {
 			project.setTags(projectTags);
 		} else {

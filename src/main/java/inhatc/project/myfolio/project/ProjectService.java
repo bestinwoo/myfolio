@@ -64,7 +64,6 @@ public class ProjectService {
 		Long currentMemberId = SecurityUtil.getCurrentMemberId();
 
 		Project project = getProjectById(projectId);
-
 		isProjectOwner(project);
 		projectRepository.delete(project);
 	}

@@ -56,10 +56,6 @@ public class ProjectRepositoryImpl extends QuerydslRepositorySupport implements 
 	}
 
 	private BooleanExpression inProjectTag(List<Long> projectTagIds) {
-		// if(projectTagIds.isEmpty()) {
-		// 	return null;
-		// }
-
 		return project.id.in(projectTagIds);
 	}
 }
