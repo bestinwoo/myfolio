@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -25,6 +26,7 @@ import inhatc.project.myfolio.common.PagedResponse;
 import inhatc.project.myfolio.member.domain.Member;
 import inhatc.project.myfolio.project.ProjectDto.Request;
 import inhatc.project.myfolio.project.ProjectDto.Response.Summary;
+import inhatc.project.myfolio.project.domain.FindType;
 import inhatc.project.myfolio.project.domain.Project;
 import inhatc.project.myfolio.project.mapper.ProjectMapper;
 import inhatc.project.myfolio.project.repository.ProjectRepository;
@@ -90,6 +92,32 @@ class ProjectServiceTest {
 		//then
 		assertThat(projectList).isNotNull();
 		assertThat(projectList.getData()).isNotEmpty();
+	}
+
+	@Test
+	@DisplayName("프로젝트 목록 조회(태그)")
+	public void getProjectListByTagName() {
+		//given
+		Request.Find find = new Request.Find();
+		find.setType(FindType.TAG);
+		find.setKeyword("Test Tag : 1");
+
+		List<Project> sampleProjectList = createSampleProjectList().stream().filter(p -> {
+			return p.getTags().stream().anyMatch(t -> t.getTag().getName().equals(find.getKeyword()));
+		}).collect(Collectors.toList());
+
+		PageRequest of = PageRequest.of(find.getPage(), find.getSize());
+
+		doReturn(new PageImpl<Project>(sampleProjectList, of, sampleProjectList.size()))
+				.when(projectRepository)
+				.findPageByTagName(any(String.class), any(Pageable.class));
+
+		//when
+		PagedResponse<Summary> projectList = projectService.getProjectList(find);
+
+		//then
+		assertThat(projectList).isNotNull();
+		assertThat(projectList.getData()).hasSize(1);
 	}
 
 
