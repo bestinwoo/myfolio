@@ -120,5 +120,26 @@ class ProjectServiceTest {
 		assertThat(projectList.getData()).hasSize(1);
 	}
 
+	@Test
+	@DisplayName("프로젝트 목록 조회(제목)")
+	public void getProjectListByTitle() {
+		//given
+		Request.Find find = new Request.Find();
+		find.setType(FindType.TITLE);
+		find.setKeyword("1");
+
+		List<Project> sampleProjectList = createSampleProjectList().stream().filter(p -> p.getTitle().contains(find.getKeyword())).collect(Collectors.toList());
+
+		doReturn(new PageImpl<Project>(sampleProjectList, PageRequest.of(find.getPage(), find.getSize()), sampleProjectList.size()))
+				.when(projectRepository)
+				.findByTitleContaining(any(String.class), any(Pageable.class));
+		//when
+		PagedResponse<Summary> projectList = projectService.getProjectList(find);
+
+		//then
+		assertThat(projectList).isNotNull();
+		assertThat(projectList.getData()).hasSize(2);
+	}
+
 
 }
