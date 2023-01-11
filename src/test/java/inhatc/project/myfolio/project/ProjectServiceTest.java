@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import inhatc.project.myfolio.common.PagedResponse;
+import inhatc.project.myfolio.common.exception.CustomException;
 import inhatc.project.myfolio.member.domain.Member;
 import inhatc.project.myfolio.project.ProjectDto.Request;
 import inhatc.project.myfolio.project.ProjectDto.Response.Summary;
@@ -141,5 +143,15 @@ class ProjectServiceTest {
 		assertThat(projectList.getData()).hasSize(2);
 	}
 
+	@Test
+	@DisplayName("프로젝트 상세 조회시 ID값이 잘못되면 예외가 발생해야 한다.")
+	public void getProjectDetailByInvalidId() {
+		Long projectId = 71L;
+		List<Project> sampleProjectList = createSampleProjectList();
+		when(projectRepository.findById(any(Long.class))).thenReturn(Optional.empty());
 
+		org.junit.jupiter.api.Assertions.assertThrows(CustomException.class,() ->
+				projectService.getProjectDetail(projectId));
+
+	}
 }
