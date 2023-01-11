@@ -46,9 +46,9 @@ class ProjectServiceTest {
 	@InjectMocks
 	private ProjectService projectService;
 
-	private List<Project> createSampleProjectList() {
+	private List<Project> createSampleProjectList(int cnt) {
 		List<Project> projectList = new ArrayList<>();
-		for(int i = 1; i <= 10; i++) {
+		for(int i = 1; i <= cnt; i++) {
 			Project project = Project.builder()
 					.summary("Test Summary : " + i)
 					.id((long)i)
@@ -79,7 +79,7 @@ class ProjectServiceTest {
 	@DisplayName("프로젝트 목록 조회 (전체)")
 	public void getProjectList() {
 		//given
-		List<Project> sampleProjectList = createSampleProjectList();
+		List<Project> sampleProjectList = createSampleProjectList(10);
 		Request.Find find = new Request.Find();
 		PageRequest of = PageRequest.of(find.getPage(), find.getSize());
 
@@ -104,7 +104,7 @@ class ProjectServiceTest {
 		find.setType(FindType.TAG);
 		find.setKeyword("Test Tag : 1");
 
-		List<Project> sampleProjectList = createSampleProjectList().stream().filter(p -> {
+		List<Project> sampleProjectList = createSampleProjectList(10).stream().filter(p -> {
 			return p.getTags().stream().anyMatch(t -> t.getTag().getName().equals(find.getKeyword()));
 		}).collect(Collectors.toList());
 
@@ -130,7 +130,7 @@ class ProjectServiceTest {
 		find.setType(FindType.TITLE);
 		find.setKeyword("1");
 
-		List<Project> sampleProjectList = createSampleProjectList().stream().filter(p -> p.getTitle().contains(find.getKeyword())).collect(Collectors.toList());
+		List<Project> sampleProjectList = createSampleProjectList(10).stream().filter(p -> p.getTitle().contains(find.getKeyword())).collect(Collectors.toList());
 
 		doReturn(new PageImpl<Project>(sampleProjectList, PageRequest.of(find.getPage(), find.getSize()), sampleProjectList.size()))
 				.when(projectRepository)
@@ -147,11 +147,24 @@ class ProjectServiceTest {
 	@DisplayName("프로젝트 상세 조회시 ID값이 잘못되면 예외가 발생해야 한다.")
 	public void getProjectDetailByInvalidId() {
 		Long projectId = 71L;
-		List<Project> sampleProjectList = createSampleProjectList();
+		List<Project> sampleProjectList = createSampleProjectList(10);
 		when(projectRepository.findById(any(Long.class))).thenReturn(Optional.empty());
 
 		org.junit.jupiter.api.Assertions.assertThrows(CustomException.class,() ->
 				projectService.getProjectDetail(projectId));
 
+	}
+
+	@Test
+	@DisplayName("프로젝트 상세 조회 성공")
+	public void getProjectDetail() {
+		Long projectId = 1L;
+		Project project = createSampleProjectList(1).get(0);
+		when(projectRepository.findById(any(Long.class))).thenReturn(Optional.of(project));
+
+		ProjectDto.Response.Detail projectDetail = projectService.getProjectDetail(projectId);
+
+		assertThat(project.getId()).isEqualTo(projectDetail.getId());
+		assertThat(project.getContent()).isEqualTo(projectDetail.getContent());
 	}
 }
