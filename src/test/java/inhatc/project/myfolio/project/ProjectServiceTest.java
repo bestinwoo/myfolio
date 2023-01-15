@@ -22,6 +22,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 
 import inhatc.project.myfolio.common.PagedResponse;
 import inhatc.project.myfolio.common.exception.CustomException;
@@ -82,12 +84,9 @@ class ProjectServiceTest {
 		List<Project> sampleProjectList = createSampleProjectList(10);
 		Request.Find find = new Request.Find();
 		PageRequest of = PageRequest.of(find.getPage(), find.getSize());
-
-
-		doReturn(new PageImpl<Project>(sampleProjectList, of, sampleProjectList.size()))
-				.when(projectRepository)
-				.findAll(any(Pageable.class));
-
+		
+		when(projectRepository.findAll(any(Pageable.class)))
+				.thenReturn(new PageImpl<Project>(sampleProjectList, PageRequest.of(find.getPage(), find.getSize()), sampleProjectList.size()));
 		//when
 		PagedResponse<Summary> projectList = projectService.getProjectList(find);
 
@@ -110,10 +109,8 @@ class ProjectServiceTest {
 
 		PageRequest of = PageRequest.of(find.getPage(), find.getSize());
 
-		doReturn(new PageImpl<Project>(sampleProjectList, of, sampleProjectList.size()))
-				.when(projectRepository)
-				.findPageByTagName(any(String.class), any(Pageable.class));
-
+		when(projectRepository.findPageByTagName(any(String.class), any(Pageable.class)))
+				.thenReturn(new PageImpl<Project>(sampleProjectList, PageRequest.of(find.getPage(), find.getSize()), sampleProjectList.size()));
 		//when
 		PagedResponse<Summary> projectList = projectService.getProjectList(find);
 
@@ -132,10 +129,10 @@ class ProjectServiceTest {
 
 		List<Project> sampleProjectList = createSampleProjectList(10).stream().filter(p -> p.getTitle().contains(find.getKeyword())).collect(Collectors.toList());
 
-		doReturn(new PageImpl<Project>(sampleProjectList, PageRequest.of(find.getPage(), find.getSize()), sampleProjectList.size()))
-				.when(projectRepository)
-				.findByTitleContaining(any(String.class), any(Pageable.class));
 		//when
+		when(projectRepository.findByTitleContaining(any(String.class), any(Pageable.class)))
+				.thenReturn(new PageImpl<Project>(sampleProjectList, PageRequest.of(find.getPage(), find.getSize()), sampleProjectList.size()));
+
 		PagedResponse<Summary> projectList = projectService.getProjectList(find);
 
 		//then
@@ -167,4 +164,5 @@ class ProjectServiceTest {
 		assertThat(project.getId()).isEqualTo(projectDetail.getId());
 		assertThat(project.getContent()).isEqualTo(projectDetail.getContent());
 	}
+
 }
