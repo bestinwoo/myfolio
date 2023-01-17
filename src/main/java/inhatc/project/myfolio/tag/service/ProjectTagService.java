@@ -33,7 +33,7 @@ public class ProjectTagService {
 		}
 	}
 
-	public ProjectTag findOrCreateProjectTag(Project project, Tag tag) {
+	private ProjectTag findOrCreateProjectTag(Project project, Tag tag) {
 		return projectTagRepository.findByProjectIdAndTagId(project.getId(), tag.getId())
 				.orElseGet(() -> {
 					ProjectTag createdProjectTag = ProjectTag.builder().project(project).tag(tag).build();
@@ -42,7 +42,9 @@ public class ProjectTagService {
 	}
 
 	public Set<String> findTagNameByKeyword(String keyword) {
-		return projectTagRepository.findByTagNameContaining(keyword).stream().map(ProjectTag::getTag).map(Tag::getName).collect(
-				Collectors.toSet());
+		return projectTagRepository.findByTagNameContaining(keyword).stream()
+				.map(ProjectTag::getTag)
+				.map(Tag::getName)
+				.collect(Collectors.toSet());
 	}
 }
