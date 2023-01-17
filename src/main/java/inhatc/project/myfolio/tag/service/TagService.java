@@ -16,16 +16,12 @@ public class TagService {
 	private final TagRepository tagRepository;
 
 	public Tag findOrCreateTag(String tagName) {
-		Tag tag = tagRepository.findByName(tagName)
-				.orElseGet(() -> {
-					Tag newTag = Tag.builder()
-									.name(tagName)
-									.build();
-					return tagRepository.save(newTag);
-					}
-				);
+		return tagRepository.findByName(tagName).orElseGet(() -> createTag(tagName));
+	}
 
-		return tag;
+	private Tag createTag(String tagName) {
+		Tag tag = Tag.builder().name(tagName).build();
+		return tagRepository.save(tag);
 	}
 
 	public List<String> findByTagName(String tagName) {
